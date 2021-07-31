@@ -110,7 +110,7 @@ export class ScraperService {
     const chapterBlocks = [];
     for (const ch of chapterDetail) {
       if (ch.rawTagName == 'p') {
-        const chText = ch.innerText
+        let chText = ch.innerText
           .replace(
             /<p class="hid">This chapter is scrapped from readlightnovel.org<\/p>/g,
             '',
@@ -121,6 +121,10 @@ export class ScraperService {
           )
           .replace(/This chapter is scrapped from readlightnovel.org/g, '')
           .replace(/&nbsp;/g, '');
+
+        if (chText.includes('(vitag.Init')) {
+          chText = chText.substring(0, chText.indexOf('(vitag.Init'));
+        }
 
         if (chText.length != 0) {
           chapterBlocks.push({
